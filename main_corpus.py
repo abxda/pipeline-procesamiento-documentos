@@ -10,14 +10,18 @@ def main(corpus_directory: str):
     """
     Función principal que orquesta el pipeline para un corpus estructurado.
     """
-    print(f"--- INICIANDO PIPELINE DE CORPUS PARA: {corpus_directory} ---")
+    import logging
 
-    if not os.path.isdir(corpus_directory):
-        print(f"ERROR: El directorio del corpus no existe: {corpus_directory}")
-        sys.exit(1)
+# (el resto de los imports)
 
+def main(corpus_directory: str):
+    # ... (código existente)
     output_dir = utils_fs.setup_main_output_dir(corpus_directory, config.OUTPUT_DIRS)
-    print(f"Directorio de trabajo configurado en: {output_dir}")
+    utils_fs.setup_logging(os.path.join(output_dir, config.OUTPUT_DIRS["LOGS"]), config.LOG_CONFIG)
+    logging.info(f"Directorio de trabajo configurado en: {output_dir}")
+
+    # ... (resto del código con logging en lugar de print)
+
 
     # Bucle principal: itera sobre las carpetas de obra (ej. '1', '2', '11')
     for obra_dir_name in sorted(os.listdir(corpus_directory)):
