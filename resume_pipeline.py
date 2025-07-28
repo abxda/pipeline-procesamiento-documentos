@@ -7,16 +7,16 @@ import logging
 import config
 from modulos import procesador_imagenes, generador_descripciones, ensamblador_markdown, utils_fs
 
-def main(existing_work_dir: str):
+def main(corpus_dir: str, existing_work_dir: str):
     """
     Función principal que reanuda un pipeline existente.
     """
     utils_fs.setup_logging(os.path.join(existing_work_dir, config.OUTPUT_DIRS["LOGS"]), config.LOG_CONFIG)
     logging.info(f"--- REANUDANDO PIPELINE EN: {existing_work_dir} ---")
+    logging.info(f"--- USANDO CORPUS ORIGINAL DE: {corpus_dir} ---")
 
-    corpus_dir = os.path.dirname(existing_work_dir.rstrip('/').replace('_processed', '')) # Inferir el directorio del corpus original
     if not os.path.isdir(corpus_dir):
-        logging.error(f"No se pudo inferir el directorio del corpus original desde {existing_work_dir}")
+        logging.error(f"El directorio del corpus original no existe: {corpus_dir}")
         sys.exit(1)
 
     # Bucle principal: itera sobre las carpetas de obra del corpus original
@@ -65,9 +65,10 @@ def main(existing_work_dir: str):
     logging.info("\n--- PIPELINE REANUDADO COMPLETADO ---")
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Uso: python resume_pipeline.py <ruta_al_directorio_de_trabajo_existente>")
+    if len(sys.argv) != 3:
+        print("Uso: python resume_pipeline.py <ruta_al_directorio_del_corpus_original> <ruta_al_directorio_de_trabajo_existente>")
         sys.exit(1)
     
-    work_path = sys.argv[1]
-    main(work_path)
+    corpus_path = sys.argv[1]
+    work_path = sys.argv[2]
+    main(corpus_path, work_path)
