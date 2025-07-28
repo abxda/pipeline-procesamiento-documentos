@@ -4,7 +4,7 @@
 import os
 import sys
 import config
-from modulos import utils_fs, procesador_documentos
+from modulos import utils_fs, procesador_documentos, procesador_imagenes
 
 def main(input_directory: str):
     """
@@ -46,8 +46,12 @@ def main(input_directory: str):
             print(f"  FALLO CRÍTICO: No se pudieron extraer los artefactos para {filename}. Saltando al siguiente documento.")
             continue
 
+        # --- Paso 2: Optimización de Imágenes ---
+        if not procesador_imagenes.optimize_images_for_doc(doc_artifact_path):
+            print(f"  FALLO CRÍTICO: No se pudieron optimizar las imágenes para {filename}. Saltando al siguiente documento.")
+            continue
+
         # --- Aquí irán los siguientes pasos del pipeline ---
-        # TODO: Llamar al procesador de imágenes
         # TODO: Llamar al generador de descripciones
         # TODO: Llamar al ensamblador de markdown
 
