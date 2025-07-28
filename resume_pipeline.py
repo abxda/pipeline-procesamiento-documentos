@@ -5,7 +5,7 @@ import os
 import sys
 import logging
 import config
-from modulos import procesador_imagenes, generador_descripciones, ensamblador_markdown, utils_fs
+from modulos import procesador_documentos, procesador_imagenes, generador_descripciones, ensamblador_markdown, utils_fs
 
 def main(corpus_dir: str, existing_work_dir: str):
     """
