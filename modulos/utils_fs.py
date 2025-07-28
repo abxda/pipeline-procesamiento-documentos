@@ -41,3 +41,40 @@ def copy_original_document(source_path: str, output_dir: str, config: dict):
     """
     originals_path = os.path.join(output_dir, config["OUTPUT_DIRS"]["ORIGINALS"])
     shutil.copy(source_path, originals_path)
+
+def find_best_sources(obra_path: str) -> dict:
+    """
+    Analiza la estructura de una obra y determina la mejor fuente para texto e imágenes.
+
+    Args:
+        obra_path (str): La ruta a la carpeta de la obra (ej. '.../corpus_nahuatl/1').
+
+    Returns:
+        dict: Un diccionario con las rutas a los archivos de texto e imágenes, o None si no se encuentran.
+    """
+    sources = {"text": [], "image": []}
+    
+    # Definir rutas de las posibles fuentes
+    ocr_docx_path = os.path.join(obra_path, 'ocr_docx')
+    ocr_pdf_path = os.path.join(obra_path, 'ocr_pdf')
+    img_pdf_path = os.path.join(obra_path, 'img_pdf')
+
+    # Lógica de selección de fuente de TEXTO
+    if os.path.isdir(ocr_docx_path) and os.listdir(ocr_docx_path):
+        sources["text"] = sorted([os.path.join(ocr_docx_path, f) for f in os.listdir(ocr_docx_path) if f.endswith('.docx')])
+    elif os.path.isdir(ocr_pdf_path) and os.listdir(ocr_pdf_path):
+        sources["text"] = sorted([os.path.join(ocr_pdf_path, f) for f in os.listdir(ocr_pdf_path) if f.endswith('.pdf')])
+    elif os.path.isdir(img_pdf_path) and os.listdir(img_pdf_path):
+        sources["text"] = sorted([os.path.join(img_pdf_path, f) for f in os.listdir(img_pdf_path) if f.endswith('.pdf')])
+
+    # Lógica de selección de fuente de IMÁGENES (siempre img_pdf si existe)
+    if os.path.isdir(img_pdf_path) and os.listdir(img_pdf_path):
+        sources["image"] = sorted([os.path.join(img_pdf_path, f) for f in os.listdir(img_pdf_path) if f.endswith('.pdf')])
+    else:
+        # Si no hay img_pdf, las imágenes vendrán de la misma fuente que el texto
+        sources["image"] = sources["text"]
+
+    if not sources["text"] or not sources["image"]:
+        return None
+        
+    return sources
