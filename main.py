@@ -4,7 +4,7 @@
 import os
 import sys
 import config
-from modulos import utils_fs, procesador_documentos, procesador_imagenes, generador_descripciones
+from modulos import utils_fs, procesador_documentos, procesador_imagenes, generador_descripciones, ensamblador_markdown
 
 def main(input_directory: str):
     """
@@ -22,7 +22,7 @@ def main(input_directory: str):
     print(f"Directorio de trabajo configurado en: {output_dir}")
 
     # 3. Bucle principal de procesamiento por documento
-    for filename in os.listdir(input_directory):
+    for filename in sorted(os.listdir(input_directory)):
         source_doc_path = os.path.join(input_directory, filename)
         doc_basename, doc_ext = os.path.splitext(filename)
 
@@ -33,8 +33,11 @@ def main(input_directory: str):
 
         print(f"\n{'='*60}\nProcesando: {filename}\n{'='*60}")
 
-        # --- Lógica de reanudación (a implementar) ---
-        # TODO: Comprobar si el markdown final ya existe y saltar si es así.
+        # --- Lógica de reanudación ---
+        final_md_path = os.path.join(output_dir, config.OUTPUT_DIRS["FINAL_MARKDOWN"], f"{doc_basename}.md")
+        if os.path.exists(final_md_path):
+            print(f"  RESULTADO FINAL YA EXISTE. Saltando procesamiento de {filename}.")
+            continue
 
         # --- Copiar documento original (Paso 0) ---
         utils_fs.copy_original_document(source_doc_path, output_dir, config)
@@ -56,8 +59,12 @@ def main(input_directory: str):
             print(f"  FALLO CRÍTICO: No se pudieron generar las descripciones para {filename}. Saltando al siguiente documento.")
             continue
 
-        # --- Aquí irán los siguientes pasos del pipeline ---
-        # TODO: Llamar al ensamblador de markdown
+        # --- Paso 4: Ensamblaje del Markdown ---
+        if not ensamblador_markdown.assemble_markdown_for_doc(doc_artifact_path, output_dir):
+            print(f"  FALLO CRÍTICO: No se pudo ensamblar el Markdown para {filename}. Saltando al siguiente documento.")
+            continue
+        
+        print(f"  PROCESAMIENTO COMPLETADO CON ÉXITO PARA: {filename}")
 
     print("\n--- PIPELINE COMPLETADO ---")
 
