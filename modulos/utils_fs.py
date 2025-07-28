@@ -66,21 +66,16 @@ def copy_original_document(source_path: str, output_dir: str, config: dict):
 def find_best_sources(obra_path: str) -> dict:
     """
     Analiza la estructura de una obra y determina la mejor fuente para texto e imágenes.
-
-    Args:
-        obra_path (str): La ruta a la carpeta de la obra (ej. '.../corpus_nahuatl/1').
-
-    Returns:
-        dict: Un diccionario con las rutas a los archivos de texto e imágenes, o None si no se encuentran.
+    Intenta primero una estructura con subcarpetas (ocr_docx, etc.) y si no, busca
+    archivos directamente en la raíz de la obra.
     """
     sources = {"text": [], "image": []}
     
-    # Definir rutas de las posibles fuentes
+    # --- Intento 1: Estructura de subcarpetas (ocr_docx, img_pdf) ---
     ocr_docx_path = os.path.join(obra_path, 'ocr_docx')
     ocr_pdf_path = os.path.join(obra_path, 'ocr_pdf')
     img_pdf_path = os.path.join(obra_path, 'img_pdf')
 
-    # Lógica de selección de fuente de TEXTO
     if os.path.isdir(ocr_docx_path) and os.listdir(ocr_docx_path):
         sources["text"] = sorted([os.path.join(ocr_docx_path, f) for f in os.listdir(ocr_docx_path) if f.endswith('.docx')])
     elif os.path.isdir(ocr_pdf_path) and os.listdir(ocr_pdf_path):
@@ -88,12 +83,23 @@ def find_best_sources(obra_path: str) -> dict:
     elif os.path.isdir(img_pdf_path) and os.listdir(img_pdf_path):
         sources["text"] = sorted([os.path.join(img_pdf_path, f) for f in os.listdir(img_pdf_path) if f.endswith('.pdf')])
 
-    # Lógica de selección de fuente de IMÁGENES (siempre img_pdf si existe)
     if os.path.isdir(img_pdf_path) and os.listdir(img_pdf_path):
         sources["image"] = sorted([os.path.join(img_pdf_path, f) for f in os.listdir(img_pdf_path) if f.endswith('.pdf')])
     else:
-        # Si no hay img_pdf, las imágenes vendrán de la misma fuente que el texto
         sources["image"] = sources["text"]
+
+    # --- Intento 2: Fallback a la raíz de la obra ---
+    if not sources["text"]:
+        root_files_pdf = sorted([os.path.join(obra_path, f) for f in os.listdir(obra_path) if f.endswith('.pdf')])
+        root_files_docx = sorted([os.path.join(obra_path, f) for f in os.listdir(obra_path) if f.endswith('.docx')])
+        
+        # Dar prioridad a DOCX si existen
+        if root_files_docx:
+            sources["text"] = root_files_docx
+            sources["image"] = root_files_docx
+        elif root_files_pdf:
+            sources["text"] = root_files_pdf
+            sources["image"] = root_files_pdf
 
     if not sources["text"] or not sources["image"]:
         return None

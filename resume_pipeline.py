@@ -14,18 +14,36 @@ def main(existing_work_dir: str):
     utils_fs.setup_logging(os.path.join(existing_work_dir, config.OUTPUT_DIRS["LOGS"]), config.LOG_CONFIG)
     logging.info(f"--- REANUDANDO PIPELINE EN: {existing_work_dir} ---")
 
-    artifacts_dir = os.path.join(existing_work_dir, config.OUTPUT_DIRS["ARTIFACTS"])
-    if not os.path.isdir(artifacts_dir):
-        logging.error(f"El directorio de artefactos no existe: {artifacts_dir}")
+    corpus_dir = os.path.dirname(existing_work_dir.rstrip('/').replace('_processed', '')) # Inferir el directorio del corpus original
+    if not os.path.isdir(corpus_dir):
+        logging.error(f"No se pudo inferir el directorio del corpus original desde {existing_work_dir}")
         sys.exit(1)
 
-    # Bucle principal: itera sobre las obras ya extraídas
-    for obra_dir_name in sorted(os.listdir(artifacts_dir)):
-        doc_artifact_path = os.path.join(artifacts_dir, obra_dir_name)
-        if not os.path.isdir(doc_artifact_path):
+    # Bucle principal: itera sobre las carpetas de obra del corpus original
+    for obra_dir_name in sorted(os.listdir(corpus_dir)):
+        obra_path = os.path.join(corpus_dir, obra_dir_name)
+        if not os.path.isdir(obra_path):
             continue
 
-        logging.info(f"\n{'='*60}\nReanudando Obra: {obra_dir_name}\n{'='*60}")
+        # Lógica de reanudación: Comprobar si el markdown final ya existe
+        final_md_path = os.path.join(existing_work_dir, config.OUTPUT_DIRS["FINAL_MARKDOWN"], f"{obra_dir_name}.md")
+        if os.path.exists(final_md_path):
+            logging.info(f"\n{'='*60}\nObra: {obra_dir_name} ya completada. Saltando.\n{'='*60}")
+            continue
+
+        logging.info(f"\n{'='*60}\nProcesando Obra Faltante: {obra_dir_name}\n{'='*60}")
+
+        # --- Paso 1: Encontrar las mejores fuentes para la obra ---
+        sources = utils_fs.find_best_sources(obra_path)
+        if not sources:
+            logging.warning(f"  ADVERTENCIA: No se encontraron fuentes válidas para la obra {obra_dir_name}. Saltando.")
+            continue
+
+        # --- Paso 2: Extracción de Artefactos Híbridos ---
+        doc_artifact_path = procesador_documentos.extract_artifacts_from_corpus(sources, existing_work_dir, obra_dir_name)
+        if not doc_artifact_path:
+            logging.error(f"  FALLO CRÍTICO: No se pudieron extraer los artefactos para {obra_dir_name}.")
+            continue
 
         # --- Paso 2: Optimización de Imágenes (resumible por naturaleza) ---
         if not procesador_imagenes.optimize_images_for_doc(doc_artifact_path):
