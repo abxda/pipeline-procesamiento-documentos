@@ -4,7 +4,7 @@
 import os
 import sys
 import config
-from modulos import utils_fs
+from modulos import utils_fs, procesador_documentos
 
 def main(input_directory: str):
     """
@@ -40,8 +40,13 @@ def main(input_directory: str):
         utils_fs.copy_original_document(source_doc_path, output_dir, config)
         print(f"Copiado a la carpeta de originales: {filename}")
 
+        # --- Paso 1: Extracción de Artefactos ---
+        doc_artifact_path = procesador_documentos.extract_artifacts(source_doc_path, output_dir)
+        if not doc_artifact_path:
+            print(f"  FALLO CRÍTICO: No se pudieron extraer los artefactos para {filename}. Saltando al siguiente documento.")
+            continue
+
         # --- Aquí irán los siguientes pasos del pipeline ---
-        # TODO: Llamar al procesador de documentos (docling)
         # TODO: Llamar al procesador de imágenes
         # TODO: Llamar al generador de descripciones
         # TODO: Llamar al ensamblador de markdown
