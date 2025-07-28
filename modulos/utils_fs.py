@@ -3,6 +3,27 @@
 
 import os
 import shutil
+import logging
+
+def setup_logging(log_dir: str, config: dict):
+    """
+    Configura el sistema de logging para que escriba a un archivo y a la consola.
+    """
+    log_filename = config["FILENAME"]
+    log_level = config["LEVEL"]
+    log_filepath = os.path.join(log_dir, log_filename)
+
+    # Evitar que se añadan múltiples handlers si la función se llama más de una vez
+    if not logging.getLogger().handlers:
+        logging.basicConfig(
+            level=getattr(logging, log_level.upper(), logging.INFO),
+            format='%(asctime)s - %(levelname)s - %(message)s',
+            handlers=[
+                logging.FileHandler(log_filepath),
+                logging.StreamHandler()
+            ]
+        )
+
 
 def setup_main_output_dir(base_path: str, config: dict) -> str:
     """
