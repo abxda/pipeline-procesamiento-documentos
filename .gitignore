@@ -1,0 +1,14 @@
+# Archivos de entorno de Python
+__pycache__/
+virtualenv/
+venv/
+*.pyc
+
+# Directorios de salida del pipeline
+*_processed_*
+
+# Logs de ejecución
+*.log
+
+# Configuraciones locales (si las hubiera)
+config.local.py
