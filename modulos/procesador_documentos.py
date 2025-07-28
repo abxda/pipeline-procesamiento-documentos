@@ -8,7 +8,7 @@ import base64
 import config
 from docling.document_converter import DocumentConverter, PdfFormatOption, WordFormatOption
 from docling.datamodel.base_models import InputFormat
-from docling.datamodel.pipeline_options import PdfPipelineOptions, DocxPipelineOptions
+from docling.datamodel.pipeline_options import PdfPipelineOptions, PipelineOptions
 
 def create_artifact_structure_for_doc(output_dir: str, doc_basename: str) -> str:
     """Crea la estructura de directorios para los artefactos de un documento."""
@@ -36,7 +36,7 @@ def extract_artifacts_from_corpus(sources: dict, output_dir: str, obra_name: str
 
     # --- Configurar Docling --- 
     pdf_pipeline_options = PdfPipelineOptions(generate_picture_images=True)
-    docx_pipeline_options = DocxPipelineOptions(generate_picture_images=True)
+    docx_pipeline_options = PipelineOptions(generate_picture_images=True)
     format_options = {
         InputFormat.PDF: PdfFormatOption(pipeline_options=pdf_pipeline_options),
         InputFormat.DOCX: WordFormatOption(pipeline_options=docx_pipeline_options)
