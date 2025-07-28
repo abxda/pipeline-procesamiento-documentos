@@ -6,6 +6,7 @@ import json
 import base64
 import requests
 import config
+import logging
 
 def generate_descriptions_for_doc(doc_artifact_path: str):
     """
