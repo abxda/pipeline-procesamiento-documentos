@@ -4,7 +4,7 @@
 import os
 import sys
 import config
-from modulos import utils_fs, procesador_documentos, procesador_imagenes
+from modulos import utils_fs, procesador_documentos, procesador_imagenes, generador_descripciones
 
 def main(input_directory: str):
     """
@@ -51,8 +51,12 @@ def main(input_directory: str):
             print(f"  FALLO CRÍTICO: No se pudieron optimizar las imágenes para {filename}. Saltando al siguiente documento.")
             continue
 
+        # --- Paso 3: Generación de Descripciones ---
+        if not generador_descripciones.generate_descriptions_for_doc(doc_artifact_path):
+            print(f"  FALLO CRÍTICO: No se pudieron generar las descripciones para {filename}. Saltando al siguiente documento.")
+            continue
+
         # --- Aquí irán los siguientes pasos del pipeline ---
-        # TODO: Llamar al generador de descripciones
         # TODO: Llamar al ensamblador de markdown
 
     print("\n--- PIPELINE COMPLETADO ---")
