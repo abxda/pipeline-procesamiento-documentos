@@ -6,7 +6,7 @@ import json
 import gc
 import base64
 import config
-from docling.document_converter import DocumentConverter, PdfFormatOption, DocxFormatOption
+from docling.document_converter import DocumentConverter, PdfFormatOption, OfficeFormatOption
 from docling.datamodel.base_models import InputFormat
 from docling.datamodel.pipeline_options import PdfPipelineOptions, DocxPipelineOptions
 
@@ -39,7 +39,7 @@ def extract_artifacts_from_corpus(sources: dict, output_dir: str, obra_name: str
     docx_pipeline_options = DocxPipelineOptions(generate_picture_images=True)
     format_options = {
         InputFormat.PDF: PdfFormatOption(pipeline_options=pdf_pipeline_options),
-        InputFormat.DOCX: DocxFormatOption(pipeline_options=docx_pipeline_options)
+        InputFormat.DOCX: OfficeFormatOption(pipeline_options=docx_pipeline_options)
     }
     converter = DocumentConverter(format_options=format_options)
 
