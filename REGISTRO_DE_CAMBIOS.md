@@ -16,4 +16,18 @@
 
 ## Historial de Ejecuciones
 
+## Historial de Ejecuciones
+
+*   **2025-07-28 | Ejecución del Corpus Náhuatl (`corpus_nahuatl_processed_02`)**
+    *   **Resultado:** Éxito Parcial. Se procesaron todas las obras con formatos de archivo directos (PDF, DOCX), incluyendo las obras complejas (`1`, `2`) y las simples (`11`, `12`, `13`, `15`, `17`, `18`, `26`, `27`, `29`).
+    *   **Hitos Logrados:**
+        *   El pipeline demostró ser flexible, manejando diversas estructuras de directorios.
+        *   El sistema de reanudación funcionó, omitiendo las obras ya procesadas en ejecuciones anteriores.
+        *   Se confirmó el uso de la GPU (`cuda:0`) para la aceleración del OCR.
+        *   El guardado incremental de metadatos demostró ser resiliente, manejando errores de la API de Ollama sin detener el proceso completo.
+    *   **Limitaciones Identificadas y Próximos Pasos:**
+        *   **Archivos ZIP:** La obra `28` fue omitida porque el pipeline no puede procesar archivos `.zip`. El siguiente paso es implementar la descompresión automática.
+        *   **Carpetas Vacías:** Las obras `24` y `25` fueron omitidas correctamente por estar vacías.
+        *   **Descripciones Fallidas:** Algunas imágenes no obtuvieron una descripción debido a errores intermitentes de la API. Se necesita un script de `retry_descriptions.py` para reintentar solo estas imágenes fallidas de manera eficiente.
+
 *(Aún no se han realizado ejecuciones)*
