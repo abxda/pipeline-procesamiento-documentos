@@ -18,6 +18,16 @@
 
 ## Historial de Ejecuciones
 
+*   **2025-07-29 | Versión 1.0: Corte Estable para Publicación**
+    *   **Resultado:** Se finaliza la primera versión funcional y robusta del pipeline.
+    *   **Capacidades Incluidas:**
+        *   Procesamiento de corpus con estructuras de directorios flexibles (`main_corpus.py`).
+        *   Herramienta de reanudación de trabajos interrumpidos (`resume_pipeline.py`).
+        *   Herramienta de reparación de texto para resultados parciales (`repair_missing_text.py`).
+        *   Herramienta de reintento para descripciones de imágenes fallidas (`retry_descriptions.py`).
+        *   Generación de `requirements.txt` y `TUTORIAL.md` para la reproducibilidad y uso del proyecto.
+    *   **Estado:** El proyecto está listo para ser publicado en un repositorio de control de versiones como GitHub.
+
 *   **2025-07-29 | Creación de Herramientas de Soporte y Documentación**
     *   **Resultado:** Éxito. Se crearon herramientas adicionales y documentación para mejorar la usabilidad y mantenibilidad del proyecto.
     *   **Hitos Logrados:**
