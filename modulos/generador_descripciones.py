@@ -8,12 +8,14 @@ import requests
 import config
 import logging
 
-def generate_descriptions_for_doc(doc_artifact_path: str):
+def generate_descriptions_for_doc(doc_artifact_path: str, force_retry: bool = False):
     """
-    Genera descripciones para las imágenes optimizadas que aún no la tienen.
-    Guarda el progreso incrementalmente después de cada imagen.
+    Genera descripciones para las imágenes optimizadas.
+    Por defecto, solo procesa imágenes sin descripción.
+    Si force_retry es True, procesará imágenes cuya descripción contenga un error.
     """
-    logging.info("  [Paso 3] Generando descripciones con Ollama...")
+    log_level = "INFO" if not force_retry else "DEBUG"
+    logging.log(getattr(logging, log_level), "  [Paso 3] Generando descripciones con Ollama...")
     metadata_path = os.path.join(doc_artifact_path, config.ARTIFACT_SUBDIRS["METADATA"])
 
     try:
@@ -23,7 +25,11 @@ def generate_descriptions_for_doc(doc_artifact_path: str):
         logging.error(f"    No se pudo leer o decodificar el archivo de metadatos: {e}")
         return False
 
-    images_to_describe = [img for img in metadata["images"] if img.get("optimized_path") and not img.get("description")]
+    if force_retry:
+        images_to_describe = [img for img in metadata["images"] if "Error" in str(img.get("description"))]
+    else:
+        images_to_describe = [img for img in metadata["images"] if img.get("optimized_path") and not img.get("description")]
+
     if not images_to_describe:
         logging.info("    -> No hay imágenes nuevas que describir.")
         return True

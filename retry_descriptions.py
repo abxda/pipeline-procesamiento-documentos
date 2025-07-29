@@ -46,9 +46,8 @@ def main(work_dir: str):
             logging.error(f"  No se pudo leer o decodificar el archivo de metadatos: {e}")
             continue
 
-        # Si hay fallos, ejecutar el generador de descripciones de nuevo.
-        # La función ya es lo suficientemente inteligente para reintentar solo las que faltan.
-        if not generador_descripciones.generate_descriptions_for_doc(doc_artifact_path):
+        # Si hay fallos, ejecutar el generador de descripciones de nuevo con forzado.
+        if not generador_descripciones.generate_descriptions_for_doc(doc_artifact_path, force_retry=True):
             logging.error(f"  FALLO CRÍTICO: No se pudieron regenerar las descripciones para {obra_dir_name}.")
             continue
 

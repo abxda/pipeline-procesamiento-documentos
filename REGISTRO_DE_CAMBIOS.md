@@ -18,6 +18,13 @@
 
 ## Historial de Ejecuciones
 
+*   **2025-07-29 | Creación de Herramientas de Soporte y Documentación**
+    *   **Resultado:** Éxito. Se crearon herramientas adicionales y documentación para mejorar la usabilidad y mantenibilidad del proyecto.
+    *   **Hitos Logrados:**
+        *   Se creó el script `retry_descriptions.py` para reintentar de forma inteligente solo las descripciones de imágenes que fallaron.
+        *   Se generó un archivo `requirements.txt` a partir del entorno de Conda para permitir una instalación reproducible con `pip`.
+        *   Se redactó un manual de usuario completo (`TUTORIAL.md`) que detalla la instalación y el uso de todos los scripts del pipeline.
+
 *   **2025-07-29 | Ejecución de Reparación (`repair_missing_text.py`)**
     *   **Resultado:** Éxito. Se repararon las obras `1` y `2` del directorio `corpus_nahuatl_processed_02`.
     *   **Hitos Logrados:**
