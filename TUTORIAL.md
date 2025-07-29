@@ -118,3 +118,4 @@ El pipeline ofrece varios scripts, cada uno con un propósito específico. Todos
   - Busca descripciones que contengan mensajes de error.
   - Si encuentra alguna, vuelve a llamar a la API de Ollama solo para esas imágenes.
   - Si obtiene nuevas descripciones, re-ensambla el Markdown final de la obra correspondiente.
+
