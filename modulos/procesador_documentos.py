@@ -105,4 +105,47 @@ def extract_artifacts_from_corpus(sources: dict, output_dir: str, obra_name: str
     print("  [Paso 1] Extracción híbrida completada.")
     return doc_artifact_path
 
+def regenerate_text_artifact(sources: dict, doc_artifact_path: str) -> bool:
+    """
+    Procesa únicamente la mejor fuente de texto y sobrescribe el artefacto de texto existente.
+    No toca las imágenes ni los metadatos.
+    """
+    # --- Configurar Docling ---
+    pdf_pipeline_options = PdfPipelineOptions(generate_picture_images=False) # No necesitamos imágenes aquí
+    docx_pipeline_options = PipelineOptions(generate_picture_images=False)
+    format_options = {
+        InputFormat.PDF: PdfFormatOption(pipeline_options=pdf_pipeline_options),
+        InputFormat.DOCX: WordFormatOption(pipeline_options=docx_pipeline_options)
+    }
+    converter = DocumentConverter(format_options=format_options)
+
+    # --- Procesar y agregar texto ---
+    full_text = ""
+    logging.info(f"    -> Procesando {len(sources['text'])} archivo(s) para TEXTO.")
+    for text_file in sources['text']:
+        try:
+            result = converter.convert(text_file)
+            full_text += result.document.export_to_markdown() + "\n\n---\n\n"
+        except Exception as e:
+            logging.warning(f"    Docling falló al procesar el archivo de texto '{os.path.basename(text_file)}'. Razón: {e}")
+
+    del converter
+    gc.collect()
+
+    # --- Sobrescribir el artefacto de texto ---
+    if not full_text:
+        logging.error("    No se extrajo ningún texto. La regeneración falló.")
+        return False
+
+    text_path = os.path.join(doc_artifact_path, config.ARTIFACT_SUBDIRS["TEXT"])
+    try:
+        with open(text_path, "w", encoding="utf-8") as f:
+            f.write(full_text)
+        logging.info(f"    -> Texto regenerado y guardado en: {config.ARTIFACT_SUBDIRS['TEXT']}")
+    except IOError as e:
+        logging.error(f"    No se pudo escribir el artefacto de texto regenerado. Razón: {e}")
+        return False
+
+    return True
+
 
