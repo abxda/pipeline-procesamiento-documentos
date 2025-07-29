@@ -18,6 +18,14 @@
 
 ## Historial de Ejecuciones
 
+*   **2025-07-29 | Ejecución de Reparación (`repair_missing_text.py`)**
+    *   **Resultado:** Éxito. Se repararon las obras `1` y `2` del directorio `corpus_nahuatl_processed_02`.
+    *   **Hitos Logrados:**
+        *   Se creó una herramienta de reparación (`repair_missing_text.py`) capaz de regenerar artefactos específicos sin afectar a los demás.
+        *   Se re-extrajo con éxito el texto de los archivos DOCX que fallaron en la ejecución inicial.
+        *   Se re-ensamblaron los archivos `1.md` y `2.md`, combinando el texto recién extraído con las descripciones de imágenes previamente generadas.
+    *   **Confirmación:** Se valida la robustez de la arquitectura de artefactos, que permite la recuperación y reparación de trabajos fallidos.
+
 *   **2025-07-28 | Ejecución del Corpus Náhuatl (`corpus_nahuatl_processed_02`)**
     *   **Resultado:** Éxito Parcial. Se procesaron todas las obras con formatos de archivo directos (PDF, DOCX), incluyendo las obras complejas (`1`, `2`) y las simples (`11`, `12`, `13`, `15`, `17`, `18`, `26`, `27`, `29`).
     *   **Hitos Logrados:**
