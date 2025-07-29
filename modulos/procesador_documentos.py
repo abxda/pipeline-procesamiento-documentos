@@ -6,6 +6,7 @@ import json
 import gc
 import base64
 import config
+import logging
 from docling.document_converter import DocumentConverter, PdfFormatOption, WordFormatOption
 from docling.datamodel.base_models import InputFormat
 from docling.datamodel.pipeline_options import PdfPipelineOptions, PipelineOptions
