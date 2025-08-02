@@ -2,6 +2,7 @@
 
 ## Desarrollo del Pipeline
 
+*   **2025-08-02 | Commit: (pendiente)**: **Corrección de Bug en `main_corpus.py`**. Se corrige un `NameError` al mover la importación del módulo `logging` al encabezado del archivo, asegurando su disponibilidad en todo el script.
 *   **2025-07-28 | Commit: `f527902`**: **Implementación del Pipeline Híbrido para Corpus.** Se añade un nuevo orquestador (`main_corpus.py`) y se modifica el core del pipeline para procesar corpus complejos. El sistema ahora puede:
     *   Identificar la "mejor fuente" para texto (DOCX > OCR PDF > Imagen PDF) e imágenes (Imagen PDF).
     *   Procesar obras fragmentadas en múltiples archivos como una sola unidad.
@@ -16,7 +17,14 @@
 
 ## Historial de Ejecuciones
 
-## Historial de Ejecuciones
+*   **2025-08-02 | Ejecución del Corpus de Actividades de Coaching**
+    *   **Resultado:** Éxito Parcial. Se procesó un corpus de 28 entregas de actividades de liderazgo.
+    *   **Hitos Logrados:**
+        *   Se validó el pipeline con un nuevo tipo de corpus, demostrando su flexibilidad.
+        *   Se identificó y corrigió un bug de importación en `main_corpus.py`.
+        *   Se documentó el entorno de Conda funcional para el proyecto: `docling_env` en `/home/abxda/miniforge3/envs/docling_env`.
+    *   **Limitaciones Identificadas:**
+        *   **Fallo Persistente en API:** La generación de descripciones para una imagen en la obra `Equipo 2 H` falló repetidamente con un error 500 del servidor de Ollama, indicando un posible problema con el modelo o el servidor que requiere investigación.
 
 *   **2025-07-29 | Versión 1.0: Corte Estable para Publicación**
     *   **Resultado:** Se finaliza la primera versión funcional y robusta del pipeline.
@@ -54,5 +62,3 @@
         *   **Archivos ZIP:** La obra `28` fue omitida porque el pipeline no puede procesar archivos `.zip`. El siguiente paso es implementar la descompresión automática.
         *   **Carpetas Vacías:** Las obras `24` y `25` fueron omitidas correctamente por estar vacías.
         *   **Descripciones Fallidas:** Algunas imágenes no obtuvieron una descripción debido a errores intermitentes de la API. Se necesita un script de `retry_descriptions.py` para reintentar solo estas imágenes fallidas de manera eficiente.
-
-*(Aún no se han realizado ejecuciones)*

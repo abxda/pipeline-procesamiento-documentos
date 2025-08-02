@@ -21,6 +21,8 @@ El pipeline requiere Python y una serie de librerías específicas. La forma má
 
 ### Pasos de Instalación
 
+**Nota sobre Entornos:** Este proyecto ha sido probado y funciona correctamente con el entorno de Conda `docling_env`, ubicado en `/home/abxda/miniforge3/envs/docling_env` en la máquina de desarrollo. Si tienes acceso a este entorno, puedes omitir los siguientes pasos de instalación.
+
 1.  **Clonar o descargar el repositorio:** Asegúrate de tener todos los archivos del proyecto (`main_corpus.py`, `requirements.txt`, etc.) en una carpeta.
 
 2.  **Crear un Entorno Virtual:**

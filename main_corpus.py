@@ -5,17 +5,12 @@ import os
 import sys
 import config
 from modulos import utils_fs, procesador_documentos, procesador_imagenes, generador_descripciones, ensamblador_markdown
+import logging
 
 def main(corpus_directory: str):
     """
     Función principal que orquesta el pipeline para un corpus estructurado.
     """
-    import logging
-
-# (el resto de los imports)
-
-def main(corpus_directory: str):
-    # ... (código existente)
     output_dir = utils_fs.setup_main_output_dir(corpus_directory, config.OUTPUT_DIRS)
     utils_fs.setup_logging(os.path.join(output_dir, config.OUTPUT_DIRS["LOGS"]), config.LOG_CONFIG)
     logging.info(f"Directorio de trabajo configurado en: {output_dir}")
