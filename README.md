@@ -44,7 +44,7 @@ Para poner en marcha el pipeline, sigue estos pasos.
 ```bash
 # 1. Clona este repositorio
 # git clone https://github.com/abxda/pipeline-procesamiento-documentos.git
-# cd TU_REPOSITORIO
+# cd pipeline-procesamiento-documentos
 
 # 2. Crea y activa un entorno virtual
 python -m venv venv
