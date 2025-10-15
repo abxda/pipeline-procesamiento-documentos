@@ -43,7 +43,7 @@ Para poner en marcha el pipeline, sigue estos pasos.
 
 ```bash
 # 1. Clona este repositorio
-# git clone https://github.com/TU_USUARIO/TU_REPOSITORIO.git
+# git clone https://github.com/abxda/pipeline-procesamiento-documentos.git
 # cd TU_REPOSITORIO
 
 # 2. Crea y activa un entorno virtual
